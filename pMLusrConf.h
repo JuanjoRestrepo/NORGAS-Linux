@@ -37,7 +37,7 @@ typedef struct
 
 #define FOREACH_TO_CONTROLLER(SIGNAL) \
         SIGNAL(sActivation) \
-        SIGNAL(sUser) \
+        SIGNAL(sUser1) \
         SIGNAL(sWeightFromUser) \
         SIGNAL(sGasLevelOk) \
         SIGNAL(sDataOk)
@@ -58,14 +58,14 @@ static const char *TO_CONTROLLER_STRING[] =
         SIGNAL(sActivationFromNorgas)   \
         SIGNAL(sActivationOk)  \
         SIGNAL(sGasLevel) \
-        SIGNAL(sUser) \
+        SIGNAL(sUser2) \
         SIGNAL(sSleep) \
         SIGNAL (sWakeUp)
 
 typedef enum
 {
   FOREACH_TO_COMMUNICATION_MODULE(GENERATE_ENUM)
-} TO_COMMUNICATION_MODULE;
+} TO_COMMUNICATION_MODULE_ENUM;
 
 static const char *TO_COMMUNICATION_MODULE[] =
 {
@@ -81,7 +81,7 @@ static const char *TO_COMMUNICATION_MODULE[] =
 typedef enum
 {
   FOREACH_TO_DATA_BASE(GENERATE_ENUM)
-} TO_DATA_BASE;
+} TO_DATA_BASE_ENUM;
 
 static const char *TO_DATA_BASE[] =
 {
@@ -152,7 +152,7 @@ static const char *COMMUNICATION_MODULE_STATE_STRING[] =
 
 #define FOREACH_DATA_BASE_STATE(STATE) \
         STATE(Activation_DataBase) \
-        STATE(sendMessage)
+        STATE(sendMessage_State)
 
 typedef enum
 {
