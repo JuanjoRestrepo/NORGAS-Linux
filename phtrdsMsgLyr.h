@@ -28,16 +28,6 @@ typedef struct                            /* message queue structure */
   sem_t             slots;                /* semaphore for slots */
 } msgq_t;
 
-typedef struct                            /* message queue structure */
-{
-  msg_t_2             buffer [BUFSIZE];     /* circular buffer */
-  int               bufin;                /* nxt free slot ndx */
-  int               bufout;               /* nxt msg slot */
-  pthread_mutex_t   buffer_lock;          /* mutex for buffer */
-  sem_t             items;                /* semaphore for items */
-  sem_t             slots;                /* semaphore for slots */
-} msgq_t_2;
-
 /***( External variables )************************************************/
 
 extern msgq_t   queue [NUM_QUEUES];       /* declare queue as an array of
@@ -48,6 +38,4 @@ extern msgq_t   queue [NUM_QUEUES];       /* declare queue as an array of
 void  initialiseQueues  ( void );
 void  destroyQueues     ( void );
 void  sendMessage       ( msgq_t *queue_ptr, msg_t msg );
-void  sendMessage_2       ( msgq_t_2 *queue_ptr, msg_t_2 msg_2 );
 msg_t receiveMessage    ( msgq_t *queue_ptr );
-msg_t_2 receiveMessage_2    ( msgq_t_2 *queue_ptr );
