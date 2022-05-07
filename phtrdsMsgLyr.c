@@ -25,10 +25,33 @@ static void PutMsg ( msgq_t *queue_ptr, msg_t msg )
   pthread_mutex_unlock ( &(queue_ptr->buffer_lock) );
 }
 
+static void PutMsg_2 ( msgq_t_2 *queue_ptr, msg_t_2 msg )
+{
+  pthread_mutex_lock ( &(queue_ptr->buffer_lock) );
+  queue_ptr->buffer [queue_ptr->bufin] = msg;
+  queue_ptr->bufin = ( queue_ptr->bufin + 1 ) % BUFSIZE;
+  pthread_mutex_unlock ( &(queue_ptr->buffer_lock) );
+}
+
+
 /* return message msg from queue (circular buffer) pointed to by queue_ptr */
+
 static msg_t GetMsg ( msgq_t *queue_ptr )
 {
   msg_t msg;
+
+  pthread_mutex_lock ( &(queue_ptr->buffer_lock) );
+  msg = queue_ptr->buffer [queue_ptr->bufout];
+  queue_ptr->bufout = ( queue_ptr->bufout + 1 ) % BUFSIZE;
+  pthread_mutex_unlock ( &(queue_ptr->buffer_lock) );
+
+  return ( msg );
+}
+
+
+static msg_t_2 GetMsg_2 ( msgq_t_2 *queue_ptr )
+{
+  msg_t_2 msg;
 
   pthread_mutex_lock ( &(queue_ptr->buffer_lock) );
   msg = queue_ptr->buffer [queue_ptr->bufout];
@@ -78,6 +101,14 @@ void sendMessage ( msgq_t *queue_ptr, msg_t msg )
   sem_post ( &(queue_ptr->items) );
 }
 
+//Envio datos señal suser_con nuevos tipos de datos
+void sendMessage_2 ( msgq_t_2 *queue_ptr, msg_t_2 msg_2 )
+{
+  sem_wait ( &(queue_ptr->slots) );
+  PutMsg_2 ( queue_ptr, msg_2 );
+  sem_post ( &(queue_ptr->items) );
+}
+
 /* emulate SDL Input operation */
 msg_t receiveMessage ( msgq_t *queue_ptr )
 {
@@ -88,4 +119,16 @@ msg_t receiveMessage ( msgq_t *queue_ptr )
   sem_post ( &(queue_ptr->slots) );
 
   return ( msg );
+}
+
+//Recibo datos señal suser_con nuevos tipos de datos
+msg_t_2 receiveMessage_2 ( msgq_t_2 *queue_ptr )
+{
+  msg_t_2 msg_2;
+
+  sem_wait ( &(queue_ptr->items) );
+  msg_2 = GetMsg_2 ( queue_ptr );
+  sem_post ( &(queue_ptr->slots) );
+
+  return ( msg_2 );
 }

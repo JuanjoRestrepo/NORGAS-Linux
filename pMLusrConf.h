@@ -29,7 +29,17 @@ typedef struct
   int   value;
 } msg_t;
 
+typedef struct client_Parameters
+{
+  int   userId;
+  int   systemId;
+}client_Parameters;
 
+typedef struct
+{
+  int   signal_2;
+  client_Parameters value_2;
+} msg_t_2;
 
 /***( User-defined signals )****************************************************/
 
@@ -52,7 +62,7 @@ static const char *TO_CONTROLLER_STRING[] =
   FOREACH_TO_CONTROLLER(GENERATE_STRING)
 };
 
-/* Signals sent to pHardware2 */
+/* Signals sent to CONTROLLER2 */
 
 #define FOREACH_TO_COMMUNICATION_MODULE(SIGNAL) \
         SIGNAL(sActivationFromNorgas)   \
