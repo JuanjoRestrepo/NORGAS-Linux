@@ -39,3 +39,4 @@ void  initialiseQueues  ( void );
 void  destroyQueues     ( void );
 void  sendMessage       ( msgq_t *queue_ptr, msg_t msg );
 msg_t receiveMessage    ( msgq_t *queue_ptr );
+
