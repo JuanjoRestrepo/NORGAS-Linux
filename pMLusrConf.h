@@ -10,7 +10,8 @@
 /***( Manifest constants for user-defined queuing system  )********************/
 
 #define     BUFSIZE       8   /* number of slots in queues */
-#define     NUM_QUEUES    4   /* number of queues */
+#define     NUM_QUEUES    5   /* number of queues */
+#define     PCUSTOMER     4   /*numer of customers */
 #define     CONTROLLER_Q  0   /* queue 0: controller */
 #define     COMMUNICATION_MODULE      1   /* queue 1: water dispenser */
 #define     DATA_BASE     2   /* queue 2: coffee dispenser */
@@ -20,6 +21,7 @@
 
 #define     GENERATE_ENUM(ENUM)     ENUM,
 #define     GENERATE_STRING(STRING) #STRING,
+
 
 /***( User-defined message structure )*****************************************/
 
@@ -40,6 +42,21 @@ typedef struct
 
 
 /***( User-defined signals )****************************************************/
+
+/* Signals sent to pcostumer */
+
+#define FOREACH_TO_PCOSTUMER(SIGNAL) \
+        SIGNAL(sLedsUser) \
+
+typedef enum
+{
+  FOREACH_TO_PCOSTUMER(GENERATE_ENUM)
+} TO_PCOSTUMER_ENUM;
+
+static const char *TO_PCOSTUMER_STRING[] =
+{
+  FOREACH_TO_PCOSTUMER(GENERATE_STRING)
+};
 
 /* Signals sent to pController3 */
 
@@ -70,6 +87,7 @@ static const char *TO_CONTROLLER_STRING[] =
         SIGNAL(sSleep) \
         SIGNAL (sWakeUp)
 
+
 typedef enum
 {
   FOREACH_TO_COMMUNICATION_MODULE(GENERATE_ENUM)
@@ -91,7 +109,7 @@ typedef enum
   FOREACH_TO_DATA_BASE(GENERATE_ENUM)
 } TO_DATA_BASE_ENUM;
 
-static const char *TO_DATA_BASE[] =
+static const char *TO_DATA_BASE_STRING[] =
 {
   FOREACH_TO_DATA_BASE(GENERATE_STRING)
 };
@@ -144,7 +162,8 @@ static const char *CONTROLLER_STATE_STRING[] =
         STATE(VerifySystemForActivation) \
         STATE(GasLevelConfirmation) \
         STATE(DataSent) \
-        STATE(Hybernation)
+        STATE(Hybernation)\
+        STATE(Ready)
 
 typedef enum
 {
@@ -161,6 +180,7 @@ static const char *COMMUNICATION_MODULE_STATE_STRING[] =
 #define FOREACH_DATA_BASE_STATE(STATE) \
         STATE(Activation_DataBase) \
         STATE(sendMessage_State)
+      //  STATE(END)
 
 typedef enum
 {
